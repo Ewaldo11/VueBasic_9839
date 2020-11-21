@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vue.js"></script>
+    <title>Unguided 9</title>
+</head>
+<body>
+    <!-- <div id="app">
+        <h1>{{ title }}</h1>
+
+    <div>
+        <h2>Random Generator</h2>
+    </div>
+
+    <h4>{{ attempt }}</h4>
+    <input type="text">
+    <input type="button" onclick="checkguess()" value=" Check Value">
+    </div> -->
+
+    
+<div class="view" id="app">
+    <form name="form">
+      <div class="div" v-if="path == '.'">
+        <center>
+          <FONT size="5">Tebak angka! (1-10)</FONT>
+          <BR></BR>
+          <output id="myOutput" name="x"></output>
+          <FONT size="4">Angka: </FONT>
+          <INPUT v-model="guess" TYPE="text" NAME="input" autofocus="autofocus" size="15"></INPUT>
+          <input type="button" @click="checkInput()" value="   Tebak   "/>
+          <BR></BR>
+          <BR></BR>
+          <div class="author" ALIGN="center">Sebastian Ewaldo | 180709839 | PAW B<a @click="showNumberToGuess()">.</a></div>
+        </center>
+      </div>
+      <div class="div" v-if="path == 'greater'">
+        <center>
+          <FONT size="5" color="Darkslateblue">Coba lagi!</FONT>
+          <BR></BR>
+          <FONT size="4">Angka: </FONT>
+          <INPUT v-model="guess" TYPE="text" NAME="input" size="15" autofocus="autofocus"></INPUT>
+          <input type="button" @click="checkInput()" value="   Check   "/>
+        </center>
+      </div>
+      <div class="div" v-if="path == 'less'">
+        <center>
+          <FONT size="5" color="Darkslateblue">Coba lagi!</FONT>
+          <BR></BR>
+          <FONT size="4">Angka: </FONT>
+          <INPUT v-model="guess" TYPE="text" NAME="input" size="15" autofocus="autofocus"></INPUT>
+          <input type="button" @click="checkInput()" value="   Check   "/>
+        </center>
+      </div>
+      <div class="div" v-if="path == 'victory'">
+        <center>
+          <FONT size="6" color="Darkslateblue">
+            <B>Selamat</B>, anda benar!
+          </FONT>
+          <p>total attempt yang digunakan {{ i }}</p>
+          <input type="button" name="again" value="   Main lagi " @click="reload()"/>
+        </center>
+      </div>
+      <div class="div" v-if="path == 'lost'">
+        <center><font size="6" color="Darkslateblue">Attempt habis, jawaban : {{ n }}</font><br/>
+          <input type="button" name="again" value="   Main Lagi " @click="reload"/>
+        </center>
+      </div>
+    </form>
+  </div>
+
+  <style>
+    html, body {
+    box-sizing: border-box; 
+    height: 100%;
+    padding: 25px;
+    }
+    #app{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    }
+    </style>
+
+<script>
+    // new Vue({
+    //     el: "#app",
+    //     data: {
+    //         title: "Test Unguided",
+    //         attempt: "",
+    //     }
+        
+    // });
+
+    let app = new Vue(
+  {
+    el: '#app',
+    data: {
+      n: -1,
+      i: 0,
+      path: '.',
+      guess : ''
+    },
+    methods: {
+      setRndNumber: function() {
+        do {
+          this.n = Math.ceil(Math.random()*10);
+        } while (this.n>10 || this.n<1);
+      },
+      checkInput : function(input) {
+		    if (this.n == -1)
+			    this.setRndNumber();			  
+        
+        let num = parseInt(this.guess);
+        this.guess = '';
+        num=Math.ceil(num);
+        if (num>=1 && num<=10) {
+          ++this.i;
+          if (num == this.n) {
+            this.path = "victory";
+          }
+          else {
+            if (this.i==3) {
+             this.path = "lost";
+            }
+            else {
+              if (num>this.n) {
+                this.path = "greater";
+                };
+              if (num<this.n) {
+                this.path ="less";
+                };
+              }
+            };
+          form.reset ();
+        }
+        else {
+          alert('The number should be between 1 and 10.');
+          form.reset ();
+        }
+      },
+      showNumberToGuess: function() {
+    		alert('Jawabannya ' + this.n);
+      },
+      reload: function() {
+        this.path = ".";
+        this.setRndNumber();
+        this.i = 0;
+      }      
+    }
+  }
+);
+app.setRndNumber();
+</script>
+</body>
+</html>
